@@ -1,6 +1,7 @@
 from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views import generic
 from .models import Choice, Question
 
@@ -10,9 +11,12 @@ class IndexView(generic.ListView):
     context_object_name = 'latest_questions'
 
     def get_queryset(self):
-        """Return the last five published questions.
+        """Return the last ten published questions
+        not including those set to be published in the future.
         """
-        return Question.objects.order_by('-published_date')[:5]
+        return Question.objects.filter(
+            published_date__lte=timezone.now()
+        ).order_by('-published_date')[:10]
 
 
 class DetailView(generic.DetailView):
