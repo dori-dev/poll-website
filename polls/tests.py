@@ -73,7 +73,7 @@ class QuestionIndexViewTests(TestCase):
         Questions with a published_date in the past are
         displayed on the index page.
         """
-        question = self.create_question(
+        question = create_question(
             question_text="Past question.",
             days=-30
         )
@@ -88,7 +88,7 @@ class QuestionIndexViewTests(TestCase):
         Questions with a published_date in the future aren't
         displayed on the index page.
         """
-        self.create_question(
+        create_question(
             question_text="Future question.",
             days=30
         )
@@ -101,11 +101,11 @@ class QuestionIndexViewTests(TestCase):
         Even if both past and future questions exist, only
         past questions are displayed.
         """
-        question = self.create_question(
+        question = create_question(
             question_text="Past question.",
             days=-30
         )
-        self.create_question(
+        create_question(
             question_text="Future question.",
             days=30
         )
@@ -119,11 +119,11 @@ class QuestionIndexViewTests(TestCase):
         """
         The questions index page may display multiple questions.
         """
-        question1 = self.create_question(
+        question1 = create_question(
             question_text="Past question 1.",
             days=-30
         )
-        question2 = self.create_question(
+        question2 = create_question(
             question_text="Past question 2.",
             days=-5
         )
