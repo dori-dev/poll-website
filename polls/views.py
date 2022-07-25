@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views import generic
@@ -25,9 +26,6 @@ def vote(request, question_id: int):
         selected_choice: Choice = question.choice_set.get(
             pk=request.POST['choice']
         )
-        print(question_id)
-        for i in range(50_000_000):
-            pass
     except (KeyError, Choice.DoesNotExist):
         # Redisplay the question voting form.
         context = {
@@ -36,7 +34,8 @@ def vote(request, question_id: int):
         }
         return render(request, 'polls/detail.html', context)
     else:
-        selected_choice.votes += 1
+        # Using F() to avoiding race conditions
+        selected_choice.votes = F('votes') + 1
         selected_choice.save()
         return redirect(reverse('polls:results', args=(question.id,)))
 
