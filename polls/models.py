@@ -22,11 +22,14 @@ class Question(models.Model):
         one_day_ago = timezone.now() - datetime.timedelta(days=1)
         return one_day_ago <= self.published_date <= timezone.now()
 
+    @admin.display(
+        description='Choices'
+    )
+    def choice_numbers(self):
+        return Question.objects.get(pk=self.id).choice_set.count()
+
     def __str__(self):
         return self.question_text
-
-    class Meta:
-        ordering = ('-published_date',)
 
 
 class Choice(models.Model):
