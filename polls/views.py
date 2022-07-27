@@ -1,4 +1,4 @@
-from django.db.models import F
+from django.db.models import F, Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -33,8 +33,12 @@ class DetailView(generic.DetailView):
         """
         Excludes any questions that aren't published yet.
         """
-        self.request.user
-        return Question.objects.filter(
+        if self.request.user.is_staff:
+            return Question.objects.all()
+        return Question.objects.annotate(
+            n_choice=Count("choice")
+        ).filter(
+            choice__gte=2,
             published_date__lte=timezone.now()
         )
 

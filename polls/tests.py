@@ -79,10 +79,22 @@ class QuestionIndexViewTests(TestCase):
         self.assertContains(response, "No polls are available.")
         self.assertQuerysetEqual(response.context['latest_questions'], [])
 
-    def test_question_with_zero_choice(self):
+    def test_past_question_with_zero_choice(self):
         pass
 
-    def test_question_with_one_choice(self):
+    def test_past_question_with_one_choice(self):
+        pass
+
+    def test_past_question_with_two_choice(self):
+        pass
+
+    def test_future_question_with_zero_choice(self):
+        pass
+
+    def test_future_question_with_one_choice(self):
+        pass
+
+    def test_future_question_with_two_choice(self):
         pass
 
     def test_past_question(self):
@@ -173,6 +185,8 @@ class QuestionDetailViewTests(TestCase):
             question_text='Future question.',
             days=5
         )
+        create_choice(future_question, "choice1")
+        create_choice(future_question, "choice2")
         url = reverse('polls:detail', args=(future_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
@@ -186,6 +200,26 @@ class QuestionDetailViewTests(TestCase):
             question_text='Past Question.',
             days=-5
         )
+        create_choice(past_question, "choice1")
+        create_choice(past_question, "choice2")
         url = reverse('polls:detail', args=(past_question.id,))
         response = self.client.get(url)
         self.assertContains(response, past_question.question_text)
+
+    def test_past_question_with_zero_choice(self):
+        pass
+
+    def test_past_question_with_one_choice(self):
+        pass
+
+    def test_past_question_with_two_choice(self):
+        pass
+
+    def test_future_question_with_zero_choice(self):
+        pass
+
+    def test_future_question_with_one_choice(self):
+        pass
+
+    def test_future_question_with_two_choice(self):
+        pass
