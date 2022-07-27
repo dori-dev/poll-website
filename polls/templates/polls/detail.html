@@ -3,7 +3,7 @@
 {% block title %}{{ question.question_text }}{% endblock title %}
 
 {% block content %}
-<form action="{% url 'polls:vote' question.id %}" method="post">
+<form action="" method="post">
   {% csrf_token %}
   <fieldset>
     <legend>
