@@ -12,11 +12,17 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last ten published questions
-        not including those set to be published in the future.
+        not including those set to be published in the future and
+        not including those have lower than 2 question.
         """
-        return Question.objects.filter(
+        recent_questions = Question.objects.filter(
             published_date__lte=timezone.now()
-        ).order_by('-published_date')[:10]
+        ).order_by('-published_date')
+        have_choice_questions = filter(
+            lambda question: question.choice_set.count() >= 2,
+            recent_questions
+        )
+        return list(have_choice_questions)[:10]
 
 
 class DetailView(generic.DetailView):
@@ -27,6 +33,7 @@ class DetailView(generic.DetailView):
         """
         Excludes any questions that aren't published yet.
         """
+        self.request.user
         return Question.objects.filter(
             published_date__lte=timezone.now()
         )
