@@ -3,12 +3,9 @@
 {% block title %}{{ question.question_text }}{% endblock title %}
 
 {% block content %}
-<form action="" method="post">
-  {% csrf_token %}
-  <fieldset>
-    <legend>
-        <h1>{{ question.question_text }}</h1>
-    </legend>
+<form action="" method="post" class="container-fluid">
+    {% csrf_token %}
+    <h1 class="title">{{ question.question_text }}</h1>
     {% if error_message %}
         <p>
             <strong>{{ error_message }}</strong>
@@ -16,17 +13,18 @@
     {% endif %}
     {% for choice in question.choice_set.all %}
         <input
+        class="form-check-input"
         type="radio"
         name="choice"
         id="choice{{ forloop.counter }}"
         value="{{ choice.id }}"
         />
-        <label for="choice{{ forloop.counter }}">
+        <label class="form-check-label" for="choice{{ forloop.counter }}">
             {{ choice.choice_text }}
         </label>
         <br />
     {% endfor %}
-  </fieldset>
-  <input type="submit" value="Vote" />
+  <input class="btn custom-btn" type="submit" value="Vote" />
 </form>
 {% endblock content %}
+

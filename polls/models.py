@@ -26,7 +26,13 @@ class Question(models.Model):
         description='Choices'
     )
     def choice_numbers(self):
-        return Question.objects.get(pk=self.id).choice_set.count()
+        return self.choice_set.count()
+
+    def votes_count(self):
+        votes = 0
+        for choice in self.choice_set.all():
+            votes += choice.votes
+        return votes
 
     def __str__(self):
         return self.question_text

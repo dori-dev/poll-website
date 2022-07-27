@@ -1,3 +1,96 @@
+.title {
+  text-transform: capitalize;
+}
+
+ul {
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
 li a {
   color: green;
+}
+
+a {
+  text-decoration: none;
+}
+
+.custom-bg {
+  background-color: #6c5ce7;
+}
+
+.custom-badge {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-height: 20px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+}
+
+.custom-list a {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.list-group-item:first-child {
+  border-top-left-radius: unset;
+  border-top-right-radius: unset;
+}
+
+.list-group-item:last-child {
+  border-bottom-right-radius: unset;
+  border-bottom-left-radius: unset;
+}
+
+.form-check-input[type="radio"] {
+  border-radius: 50%;
+}
+.form-check-input:active {
+  filter: brightness(90%);
+}
+.form-check-input:focus {
+  border-color: #a29bfe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(108, 92, 231, 0.251);
+}
+.form-check-input:checked {
+  background-color: #6c5ce7;
+  border-color: #6c5ce7;
+}
+.form-check-input:checked[type="checkbox"] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='m6 10 3 3 6-6'/%3e%3c/svg%3e");
+}
+.form-check-input:checked[type="radio"] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+}
+.form-check-input[type="checkbox"]:indeterminate {
+  background-color: #6c5ce7;
+  border-color: #6c5ce7;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10h8'/%3e%3c/svg%3e");
+}
+
+.custom-btn {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: #6c5ce7;
+  --bs-btn-border-color: #6c5ce7;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #6654eb;
+  --bs-btn-hover-border-color: #6451f5;
+  --bs-btn-focus-shadow-rgb: 162, 155, 254;
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #6451f5;
+  --bs-btn-active-border-color: #6c5ce7;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: #6c5ce7;
+  --bs-btn-disabled-border-color: #6c5ce7;
+  border-radius: 8px;
+  padding: 3px 6px;
 }

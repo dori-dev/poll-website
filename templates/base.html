@@ -5,11 +5,57 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'polls/style.css' %}"
+    />
+    <link
+      rel="shortcut icon"
+      href="{% static 'img/favicon.ico' %}"
+      type="image/x-icon"
+    />
     <title>{% block title %}{% endblock title %}</title>
   </head>
   <body>
+    <nav
+      class="navbar navbar-dark navbar-expand-lg"
+      style="background-color: #6c5ce7"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img
+            src="{% static 'img/poll.png' %}"
+            alt=""
+            height="24"
+            class="d-inline-block align-text-top"
+          />
+          Polls
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" href="#">More</a>
+            <a class="nav-link" href="#">Create</a>
+            <a class="nav-link" href="#">About Us</a>
+          </div>
+        </div>
+      </div>
+    </nav>
     {% block content %}
     {% endblock content %}
+    <script src="{% static 'js/bootstrap.js' %}"></script>
   </body>
 </html>

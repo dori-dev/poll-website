@@ -1,16 +1,22 @@
 {% extends 'base.html' %}
+{% load date_time %}
+{% load tz %}
 
-{% block title %}Polls List{% endblock title %}
+{% block title %}Polls{% endblock title %}
 
 {% block content %}
     {% if latest_questions %}
-        <ul>
+    <div class="list-group custom-list">
         {% for question in latest_questions %}
-            <li>
-                <a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a>
-            </li>
+            <a href="{% url 'polls:detail' question.id %}" class="list-group-item list-group-item-action" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                    <div class="fw-bold title">{{ question.question_text }}</div>
+                    <small class="badge custom-bg rounded-pill custom-badge">{{ question.votes_count }}</small>
+                </div>
+                <p class="mb-1 description">{{ question.published_date|timezone:"Asia/Tehran"|change_format }}</p>
+            </a>
         {% endfor %}
-        </ul>
+    </div>
     {% else %}
         <p>No polls are available.</p>
     {% endif %}

@@ -3,15 +3,18 @@
 {% block title %}{{ question.text }} results{% endblock title %}
 
 {% block content %}
-<h1>{{ question.question_text }}</h1>
-<ul>
-    {% for choice in question.choice_set.all %}
-      <li>
-        {{ choice.choice_text }} - {{ choice.votes }} vote{{ choice.votes|pluralize }}
-      </li>
-    {% endfor %}
-</ul>
-<a href="{% url 'polls:detail' question.id %}">Vote again?</a>
-<br>
-<a href="{% url 'polls:index' %}">Back to polls list?</a>
+<div class="container-fluid">
+  <h1 class="title">{{ question.question_text }}</h1>
+  <ul>
+      {% for choice in question.choice_set.all %}
+        <li>
+          {{ choice.choice_text }} - {{ choice.votes }} vote{{ choice.votes|pluralize }}
+        </li>
+      {% endfor %}
+  </ul>
+  <a class="btn custom-btn" href="{% url 'polls:detail' question.id %}">Vote again?</a>
+  <br>
+  <br>
+  <a class="btn custom-btn" href="{% url 'polls:index' %}">Back to polls list?</a>
+</div>
 {% endblock content %}
