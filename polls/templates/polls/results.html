@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load plural %}
 
 {% block title %}{{ question.text }} results{% endblock title %}
 
@@ -17,7 +18,7 @@
     <li class="list-group-item d-flex justify-content-between align-items-center">
       {{ choice.choice_text }}
       <span class="badge custom-bg rounded-pill">
-        {{ choice.votes }} vote{{ choice.votes|pluralize }}
+        {{ choice.votes }} vote{{ choice.votes|plural }}
       </span>
     </li>
     {% endfor %}
