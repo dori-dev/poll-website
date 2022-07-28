@@ -3,7 +3,7 @@
 {% block title %}{{ question.question_text }}{% endblock title %}
 
 {% block content %}
-<form action="" method="post" class="container-fluid">
+<form action="" method="post" class="container-fluid" id="voting-from">
     {% csrf_token %}
     <h1 class="title header">{{ question.question_text }}</h1>
     {% if error_message %}
@@ -11,10 +11,10 @@
             <strong>{{ error_message }}</strong>
         </p>
     {% endif %}
-    <ul class="list-group custom-ul  list-group-flush">
-        <li class="list-group-item custom-list"></li>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"></li>
         {% for choice in question.choice_set.all %}
-            <li class="list-group-item custom-list">
+            <li class="list-group-item align-items-center">
                 <input
                 class="form-check-input"
                 type="radio"
@@ -29,7 +29,9 @@
             {% endfor %}
         <br>
     </ul>
-  <input class="btn custom-btn" type="submit" value="Vote" />
+    <div class="buttons">
+        <a onclick="document.getElementById('voting-from').submit();" class="btn custom-btn" type="submit" href="javascript:{}">Vote</a>
+    </div>
 </form>
 {% endblock content %}
 

@@ -34,6 +34,9 @@ class Question(models.Model):
             votes += choice.votes
         return votes
 
+    def sorted_choice(self):
+        return self.choice_set.order_by('-votes')
+
     def __str__(self):
         return self.question_text
 
