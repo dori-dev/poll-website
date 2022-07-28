@@ -80,22 +80,50 @@ class QuestionIndexViewTests(TestCase):
         self.assertQuerysetEqual(response.context['latest_questions'], [])
 
     def test_past_question_with_zero_choice(self):
-        pass
+        create_question(
+            question_text="Past question.",
+            days=-30
+        )
+        response = self.client.get(reverse('polls:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(
+            response.context['latest_questions'],
+            [],
+        )
 
     def test_past_question_with_one_choice(self):
-        pass
-
-    def test_past_question_with_two_choice(self):
-        pass
+        question = create_question(
+            question_text="Past question",
+            days=-30
+        )
+        create_choice(question, "choice1")
+        response = self.client.get(reverse('polls:index'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(
+            response.context['latest_questions'],
+            [],
+        )
 
     def test_future_question_with_zero_choice(self):
-        pass
+        create_question(
+            question_text="Future question.",
+            days=30
+        )
+        response = self.client.get(reverse('polls:index'))
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(response.context['latest_questions'], [])
 
     def test_future_question_with_one_choice(self):
-        pass
-
-    def test_future_question_with_two_choice(self):
-        pass
+        question = create_question(
+            question_text="Future question.",
+            days=30
+        )
+        create_choice(question, "choice1")
+        response = self.client.get(reverse('polls:index'))
+        self.assertContains(response, "No polls are available.")
+        self.assertQuerysetEqual(response.context['latest_questions'], [])
 
     def test_past_question(self):
         """
@@ -207,19 +235,142 @@ class QuestionDetailViewTests(TestCase):
         self.assertContains(response, past_question.question_text)
 
     def test_past_question_with_zero_choice(self):
-        pass
+        past_question = create_question(
+            question_text='Past Question.',
+            days=-5
+        )
+        url = reverse('polls:detail', args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     def test_past_question_with_one_choice(self):
-        pass
-
-    def test_past_question_with_two_choice(self):
-        pass
+        past_question = create_question(
+            question_text='Past Question.',
+            days=-5
+        )
+        create_choice(past_question, "choice1")
+        url = reverse('polls:detail', args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     def test_future_question_with_zero_choice(self):
-        pass
+        future_question = create_question(
+            question_text='Future question.',
+            days=5
+        )
+        url = reverse('polls:detail', args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     def test_future_question_with_one_choice(self):
-        pass
+        future_question = create_question(
+            question_text='Future question.',
+            days=5
+        )
+        create_choice(future_question, "choice1")
+        url = reverse('polls:detail', args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
-    def test_future_question_with_two_choice(self):
-        pass
+
+class QuestionResultViewTests(TestCase):
+    def _vote(self, question, choice, return_response=False):
+        url = reverse('polls:detail', args=(question.id,))
+        response = self.client.post(
+            url,
+            {
+                "choice": str(choice.id)
+            },
+            follow=True
+        )
+        if return_response:
+            return response
+        return response.redirect_chain[0][0]
+
+    def test_result_with_one_vote(self):
+        question = create_question(
+            question_text="The sample question",
+            days=-5
+        )
+        choice1 = create_choice(question, "choice1")
+        choice2 = create_choice(question, "choice2")
+        response = self.client.get(self._vote(question, choice2))
+        self.assertEqual(question.votes_count(), 1)
+        self.assertContains(response, question.question_text)
+        self.assertContains(response, choice1.choice_text)
+        self.assertContains(response, choice2.choice_text)
+        self.assertContains(response, "1 vote")
+        self.assertContains(response, "0 vote")
+        self.assertNotContains(response, "1 votes")
+        self.assertNotContains(response, "0 votes")
+
+    def test_result_with_two_vote(self):
+        question = create_question(
+            question_text="The sample question",
+            days=-5
+        )
+        choice1 = create_choice(question, "choice1")
+        choice2 = create_choice(question, "choice2")
+        self._vote(question, choice2)
+        response = self.client.get(self._vote(question, choice2))
+        self.assertEqual(question.votes_count(), 2)
+        self.assertContains(response, question.question_text)
+        self.assertContains(response, choice1.choice_text)
+        self.assertContains(response, choice2.choice_text)
+        self.assertContains(response, "2 votes")
+        self.assertContains(response, "0 vote")
+        self.assertNotContains(response, "0 votes")
+
+    def test_result_with_three_vote(self):
+        question = create_question(
+            question_text="The sample question",
+            days=-5
+        )
+        choice1 = create_choice(question, "choice1")
+        choice2 = create_choice(question, "choice2")
+        self._vote(question, choice1)
+        response = self.client.get(self._vote(question, choice2))
+        self.assertEqual(question.votes_count(), 2)
+        self.assertContains(response, question.question_text)
+        self.assertContains(response, choice1.choice_text)
+        self.assertContains(response, choice2.choice_text)
+        self.assertContains(response, "1 vote")
+        self.assertNotContains(response, "1 votes")
+
+    def test_result_for_future_question(self):
+        question = create_question(
+            question_text="The sample question",
+            days=5
+        )
+        choice1 = create_choice(question, "choice1")
+        choice2 = create_choice(question, "choice2")
+        response = self._vote(question, choice1, return_response=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(question.votes_count(), 0)
+        response = self._vote(question, choice2, return_response=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(question.votes_count(), 0)
+
+    def test_result_for_zero_choice(self):
+        question = create_question(
+            question_text="The sample question",
+            days=-5
+        )
+        url = reverse('polls:results', args=(question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(question.votes_count(), 0)
+
+    def test_result_for_one_choice(self):
+        question = create_question(
+            question_text="The sample question",
+            days=-5
+        )
+        choice1 = create_choice(question, "choice1")
+        response = self._vote(question, choice1, return_response=True)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(question.votes_count(), 0)
+        url = reverse('polls:results', args=(question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(question.votes_count(), 0)

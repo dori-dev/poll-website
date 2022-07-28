@@ -32,6 +32,7 @@ class DetailView(generic.DetailView):
     def get_queryset(self):
         """
         Excludes any questions that aren't published yet.
+        and have greaten than or equal 2 choice.
         """
         if self.request.user.is_staff:
             return Question.objects.all()
@@ -44,9 +45,18 @@ class DetailView(generic.DetailView):
 
     def post(self, request, *args, **kwargs):
         question_id = kwargs.get('pk')
+        if not request.user.is_staff:
+            filtered_question = Question.objects.annotate(
+                n_choice=Count("choice")
+            ).filter(
+                n_choice__gte=2,
+                published_date__lte=timezone.now()
+            )
+        else:
+            filtered_question = Question
         if question_id is None:
             return redirect('polls:index')
-        question = get_object_or_404(Question, pk=question_id)
+        question = get_object_or_404(filtered_question, pk=question_id)
         try:
             selected_choice: Choice = question.choice_set.get(
                 pk=request.POST['choice']
@@ -68,3 +78,17 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
+
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        and have greaten than or equal 2 choice.
+        """
+        if self.request.user.is_staff:
+            return Question.objects.all()
+        return Question.objects.annotate(
+            n_choice=Count("choice")
+        ).filter(
+            n_choice__gte=2,
+            published_date__lte=timezone.now()
+        )
