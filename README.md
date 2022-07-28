@@ -48,6 +48,12 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+## Test Project
+
+```
+python manage.py test
+```
+
 ## Run Codes
 
 ```
