@@ -63,6 +63,6 @@ Admin Page: [127.0.0.1:8000/admin](http://127.0.0.1:8000/admin/)
 
 ## Links
 
-Download Source Code: [Click Here](https://github.com/dori-dev/polls-website/archive/refs/heads/master.zip)
+Download Source Code: [Click Here](https://github.com/dori-dev/poll-website/archive/refs/heads/master.zip)
 
 My Github Account: [Click Here](https://github.com/dori-dev/)
