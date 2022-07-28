@@ -1,15 +1,19 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}{{ question.text }} results{% endblock title %}
 
 {% block content %}
+<script src="{% static 'js/chart.js' %}"></script>
 <div class="container-fluid">
-  <h1 class="title">{{ question.question_text }}</h1>
+  <h1 class="title header">{{ question.question_text }}</h1>
+  <canvas id="myChart" style="width: 100%; max-width: 600px;margin: 0;"></canvas>
   <ul>
       {% for choice in question.choice_set.all %}
         <li>
           {{ choice.choice_text }} - {{ choice.votes }} vote{{ choice.votes|pluralize }}
         </li>
+        <span></span>
       {% endfor %}
   </ul>
   <a class="btn custom-btn" href="{% url 'polls:detail' question.id %}">Vote again?</a>
@@ -17,4 +21,32 @@
   <br>
   <a class="btn custom-btn" href="{% url 'polls:index' %}">Back to polls list?</a>
 </div>
+<script>
+  var xValues = [
+    {% for choice in question.choice_set.all %}
+       "{{ choice.choice_text }}",
+    {% endfor %}
+  ];
+  var yValues = [
+    {% for choice in question.choice_set.all %}
+    {{ choice.votes }},
+    {% endfor %}
+  ];
+  var barColors = ["#a29bfe", "#55efc4", "#fd79a8", "#74b9ff", "#b2bec3", "#fdcb6e", "#81ecec", "#ff7675", "#636e72", "#e84393", "#00cec9", "#fab1a0", "#6c5ce7", "#ffeaa7", "#0984e3", "#d63031", "#00b894", "#e17055"];
+  new Chart("myChart", {
+    type: "doughnut",
+    data: {
+      labels: xValues,
+      datasets: [
+        {
+          backgroundColor: barColors,
+          data: yValues,
+        },
+      ],
+    },
+    options: {
+      legend: { display: false, }
+    },
+  });
+</script>
 {% endblock content %}

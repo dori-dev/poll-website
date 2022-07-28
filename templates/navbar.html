@@ -1,0 +1,36 @@
+{% load static %}
+<nav
+class="navbar navbar-dark navbar-expand-lg"
+style="background-color: #6c5ce7"
+>
+<div class="container-fluid">
+  <a class="navbar-brand" href="{% url 'polls:index' %}">
+    <img
+      src="{% static 'img/poll.png' %}"
+      alt=""
+      height="24"
+      class="d-inline-block align-text-top"
+    />
+    Polls
+  </a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link active" aria-current="page" href="{% url 'polls:index' %}">Home</a>
+      <a class="nav-link" href="#">More</a>
+      <a class="nav-link" href="#">Create</a>
+      <a class="nav-link" href="#">About Us</a>
+    </div>
+  </div>
+</div>
+</nav>

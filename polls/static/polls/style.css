@@ -1,21 +1,9 @@
+.header {
+  margin-top: 15px;
+}
+
 .title {
   text-transform: capitalize;
-}
-
-ul {
-  padding: 0;
-}
-
-li {
-  list-style: none;
-}
-
-li a {
-  color: green;
-}
-
-a {
-  text-decoration: none;
 }
 
 .custom-bg {
@@ -92,5 +80,18 @@ a {
   --bs-btn-disabled-bg: #6c5ce7;
   --bs-btn-disabled-border-color: #6c5ce7;
   border-radius: 8px;
-  padding: 3px 6px;
+  padding: 3px 20px;
+}
+
+.custom-hr {
+  margin: 8px 0;
+}
+
+.custom-list {
+  margin: 0 auto 0 0; 
+  min-width: 30%;
+}
+
+hr {
+  color: red !important;
 }

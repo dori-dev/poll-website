@@ -5,25 +5,30 @@
 {% block content %}
 <form action="" method="post" class="container-fluid">
     {% csrf_token %}
-    <h1 class="title">{{ question.question_text }}</h1>
+    <h1 class="title header">{{ question.question_text }}</h1>
     {% if error_message %}
-        <p>
+        <p style="color: #dc3545;">
             <strong>{{ error_message }}</strong>
         </p>
     {% endif %}
-    {% for choice in question.choice_set.all %}
-        <input
-        class="form-check-input"
-        type="radio"
-        name="choice"
-        id="choice{{ forloop.counter }}"
-        value="{{ choice.id }}"
-        />
-        <label class="form-check-label" for="choice{{ forloop.counter }}">
-            {{ choice.choice_text }}
-        </label>
-        <br />
-    {% endfor %}
+    <ul class="list-group custom-ul  list-group-flush">
+        <li class="list-group-item custom-list"></li>
+        {% for choice in question.choice_set.all %}
+            <li class="list-group-item custom-list">
+                <input
+                class="form-check-input"
+                type="radio"
+                name="choice"
+                id="choice{{ forloop.counter }}"
+                value="{{ choice.id }}"
+                />
+                <label class="form-check-label" for="choice{{ forloop.counter }}">
+                    {{ choice.choice_text }}
+                </label>
+            </li>
+            {% endfor %}
+        <br>
+    </ul>
   <input class="btn custom-btn" type="submit" value="Vote" />
 </form>
 {% endblock content %}

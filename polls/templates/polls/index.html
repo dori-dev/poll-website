@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load date_time %}
+{% load plural %}
 {% load tz %}
 
 {% block title %}Polls{% endblock title %}
@@ -11,7 +12,7 @@
             <a href="{% url 'polls:detail' question.id %}" class="list-group-item list-group-item-action" aria-current="true">
                 <div class="d-flex w-100 justify-content-between">
                     <div class="fw-bold title">{{ question.question_text }}</div>
-                    <small class="badge custom-bg rounded-pill custom-badge">{{ question.votes_count }}</small>
+                    <small class="badge custom-bg rounded-pill custom-badge">{{ question.votes_count }} vote{{ question.votes_count|plural }}</small>
                 </div>
                 <p class="mb-1 description">{{ question.published_date|timezone:"Asia/Tehran"|change_format }}</p>
             </a>
